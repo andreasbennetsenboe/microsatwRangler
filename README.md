@@ -11,9 +11,8 @@ people that son’t know what software Mendel is.
 
 ## Installation
 
-You can install the released version of msatwRangler from
-[CRAN](https://CRAN.R-project.org) with:
+You can install msatwRangler with this line of code:
 
 ``` r
-install.packages("msatwRangler")
+devtools::install_github("andreasbennetsenboe/msatwRangler")
 ```
