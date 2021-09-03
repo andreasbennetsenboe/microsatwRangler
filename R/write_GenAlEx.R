@@ -5,7 +5,7 @@
 #' @param path The desired path for the output file.
 #'
 #' @return a .csv file placed in the directory
-write.GenAlEx <- function(path) {
+write_GenAlEx <- function(path) {
   write.table(
     data.frame(
       rbind(
