@@ -2,24 +2,25 @@
 #'
 #' Create a GenAlEx formated .csv file in the directory from a dataset imported from Geneious.
 #'
+#' @param x A tibble with microsatellite data.
 #' @param path The desired path for the output file.
 #'
 #' @return a .csv file placed in the directory
-write_GenAlEx <- function(path) {
+write_GenAlEx <- function(x, path) {
   write.table(
     data.frame(
       rbind(
         as.character(
           c(
-            (data %>%
+            (x %>%
                select(starts_with("Mac")) %>%
                ncol())/2,
-            data %>%
+            x %>%
               nrow(),
-            data %>%
+            x %>%
               select(Pop) %>%
               n_distinct(),
-            (data %>%
+            (x %>%
                select(Pop) %>%
                count(Pop))$n
           )
@@ -29,7 +30,7 @@ write_GenAlEx <- function(path) {
           "NA",
           "NA",
           unlist(
-            data %>%
+            x %>%
               select(Pop) %>%
               unique()
           )
@@ -43,7 +44,7 @@ write_GenAlEx <- function(path) {
     quote = FALSE,
     na = " ")
 
-  write.table(data.frame(t(str_replace(ifelse(str_detect(c(colnames(data)), "...2$"), NA, c(colnames(data))), "...1$", ""))),
+  write.table(data.frame(t(str_replace(ifelse(str_detect(c(colnames(x)), "...2$"), NA, c(colnames(x))), "...1$", ""))),
               file = path,
               sep = ",",
               append=TRUE,
@@ -52,7 +53,7 @@ write_GenAlEx <- function(path) {
               quote = FALSE,
               na = " ")
 
-  write.table(data,
+  write.table(x,
               file=path,
               sep = ",",
               append=TRUE,
