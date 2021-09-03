@@ -3,6 +3,7 @@
 export("%>%")
 export(prepdata)
 export(read_GenAlEx)
+export(write_GenAlEx)
 export(write_locus_file)
 export(write_pedigree_file)
 importFrom(magrittr,"%>%")

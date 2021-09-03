@@ -6,6 +6,8 @@
 #' @param path The desired path for the output file.
 #'
 #' @return a .csv file placed in the directory
+#' @export
+
 write_GenAlEx <- function(x, path) {
   write.table(
     data.frame(
