@@ -4,9 +4,11 @@
 \alias{write_GenAlEx}
 \title{Write a GenAlEx formated .csv file}
 \usage{
-write_GenAlEx(path)
+write_GenAlEx(x, path)
 }
 \arguments{
+\item{x}{A tibble with microsatellite data.}
+
 \item{path}{The desired path for the output file.}
 }
 \value{
