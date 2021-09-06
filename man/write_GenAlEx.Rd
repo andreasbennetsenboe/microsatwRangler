@@ -4,12 +4,14 @@
 \alias{write_GenAlEx}
 \title{Write a GenAlEx formated .csv file}
 \usage{
-write_GenAlEx(x, path)
+write_GenAlEx(x, path, lociprefix)
 }
 \arguments{
 \item{x}{A tibble with microsatellite data.}
 
 \item{path}{The desired path for the output file.}
+
+\item{lociprefix}{A character string specifying the first letters shared by all loci in the data used to identify locus columns.}
 }
 \value{
 a .csv file placed in the directory

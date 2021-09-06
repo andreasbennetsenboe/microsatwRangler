@@ -4,18 +4,19 @@
 #'
 #' @param x A tibble with microsatellite data.
 #' @param path The desired path for the output file.
+#' @param lociprefix  A character string specifying the first letters shared by all loci in the data used to identify locus columns.
 #'
 #' @return a .csv file placed in the directory
 #' @export
 
-write_GenAlEx <- function(x, path) {
+write_GenAlEx <- function(x, path, lociprefix) {
   write.table(
     data.frame(
       rbind(
         as.character(
           c(
             (x %>%
-               select(starts_with("Mac")) %>%
+               select(starts_with(lociprefix)) %>%
                ncol())/2,
             x %>%
               nrow(),
