@@ -10,6 +10,8 @@
 #' @export
 
 write_GenAlEx <- function(x, path, lociprefix) {
+  x <- x[order(Pop),]
+
   write.table(
     data.frame(
       rbind(
