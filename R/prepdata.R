@@ -17,7 +17,7 @@ prepdata <- function(x, lociprefix) {
         ~ dplyr::case_when(
           . > 0 ~ paste0(.,
                          "-",
-                         get(colnames(data)[which(colnames(data) == dplyr::cur_column()) + 1])),
+                         get(colnames(x)[which(colnames(x) == dplyr::cur_column()) + 1])),
           . == 0 ~ NA_character_
           )
         )
