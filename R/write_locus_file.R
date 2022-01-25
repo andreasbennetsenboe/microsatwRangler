@@ -23,15 +23,18 @@ write_locus_file <- function(x, lociprefix, locus_filename) {
   loci_data <-
     x %>%
     dplyr::select(
-      dplyr::starts_with(lociprefix)
+      -IndID, -Pop
     )
 
   subset_list <- list()
 
   for (i in 1:length(locusnames)) {
     subset_list[[i]] <- loci_data %>%
-      dplyr::select(i)
+      dplyr::select(i, i+1) %>%
+      tidyr::pivot_longer(cols = dplyr::starts_with(c(lociprefix, "...")), values_to = locusnames[i]) %>%
+      dplyr::select(starts_with(lociprefix))
   }
+
 
   loci_list <- list()
 
@@ -41,28 +44,28 @@ write_locus_file <- function(x, lociprefix, locus_filename) {
         paste(
           gsub('.{1}$',
                "",
-               colnames(subset_list[[i]])
-               )
-          ),
-      "AUTOSOME",
-      dplyr::n_distinct(
-        subset_list[[i]] %>%
-          dplyr::select(dplyr::starts_with("Ma")) %>%
-          tidyr::pivot_longer(cols = dplyr::starts_with("Ma")) %>%
-          dplyr::select(value) %>%
-          dplyr::filter(value != 0)
-      )),
+               colnames(subset_list[[i]])[1]
+          )
+        ),
+        "AUTOSOME",
+        dplyr::n_distinct(
+          subset_list[[i]] %>%
+            dplyr::select(dplyr::starts_with(c(lociprefix, "..."))) %>%
+            tidyr::pivot_longer(cols = dplyr::starts_with(c(lociprefix, "..."))) %>%
+            dplyr::select(value) %>%
+            dplyr::filter(value != 0)
+        )),
       b = subset_list[[i]] %>%
-        dplyr::select(dplyr::starts_with("Ma")) %>%
-        tidyr::pivot_longer(cols = dplyr::starts_with("Ma")) %>%
+        dplyr::select(dplyr::starts_with(c(lociprefix, "..."))) %>%
+        tidyr::pivot_longer(cols = dplyr::starts_with(c(lociprefix, "..."))) %>%
         dplyr::select(value) %>%
         dplyr::filter(value != 0) %>%
         dplyr::count(value) %>%
         dplyr::mutate(Freq = n/sum(n)) %>%
         dplyr::pull(value),
       c = subset_list[[i]] %>%
-        dplyr::select(dplyr::starts_with("Ma")) %>%
-        tidyr::pivot_longer(cols = dplyr::starts_with("Ma")) %>%
+        dplyr::select(dplyr::starts_with(c(lociprefix, "..."))) %>%
+        tidyr::pivot_longer(cols = dplyr::starts_with(c(lociprefix, "..."))) %>%
         dplyr::select(value) %>%
         dplyr::filter(value != 0) %>%
         dplyr::count(value) %>%
@@ -73,18 +76,18 @@ write_locus_file <- function(x, lociprefix, locus_filename) {
 
   for(i in 1:length(loci_list)){
     utils::write.table(t(data.frame(loci_list[[i]][1])),
-                file=locus_filename,
-                sep = ",",
-                append=TRUE,
-                row.names=FALSE,
-                col.names = FALSE,
-                quote = FALSE)
+                       file=locus_filename,
+                       sep = ",",
+                       append=TRUE,
+                       row.names=FALSE,
+                       col.names = FALSE,
+                       quote = FALSE)
     utils::write.table(data.frame(loci_list[[i]][2:3]),
-                file=locus_filename,
-                sep = ",",
-                append=TRUE,
-                row.names=FALSE,
-                col.names = FALSE,
-                quote = FALSE)
+                       file=locus_filename,
+                       sep = ",",
+                       append=TRUE,
+                       row.names=FALSE,
+                       col.names = FALSE,
+                       quote = FALSE)
   }
 }
